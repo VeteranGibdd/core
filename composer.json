@@ -13,7 +13,7 @@
             "email": "kpekep@list.ru"
         }
     ],
-    "require": {
+    "require-dev": {
         "phpunit/phpunit": "^9.6"
     }
 }
