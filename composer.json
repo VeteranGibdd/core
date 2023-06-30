@@ -1,0 +1,19 @@
+{
+    "name": "gibdd/core",
+    "description": "Core logic of the project",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Gibdd\\Core\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lehersun",
+            "email": "kpekep@list.ru"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^9.6"
+    }
+}
