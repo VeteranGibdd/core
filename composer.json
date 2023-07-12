@@ -1,29 +1,28 @@
 {
-    "name": "gibdd/core",
-    "description": "Core logic of the project",
-    "type": "library",
-    "autoload": {
-        "psr-4": {
-            "Gibdd\\Core\\": "src/",
-            "Gibdd\\Core\\Tests": "tests/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Stefan",
-            "email": "steptarget@yandex.ru"
-        }
-    ],
-    "require-dev": {
-        "phpunit/phpunit": "^9.6",
-        "phpstan/phpstan": "^1.10"
-    },
-    "require": {
-        "doctrine/dbal": "^3.6",
-        "robmorgan/phinx": "^0.13.4",
-        "symfony/yaml": "*"
-    },
-    "scripts": {
-        "test": "php .vendor/bin/phpunit ./tests"
+  "name": "gibdd/core",
+  "description": "Core logic of the project",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Gibdd\\Core\\": "src/",
+      "Gibdd\\Core\\Tests\\": "tests/"
     }
+  },
+  "authors": [
+    {
+      "name": "Stefan",
+      "email": "steptarget@yandex.ru"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "phpstan/phpstan": "^1.10"
+  },
+  "require": {
+    "doctrine/dbal": "^3.6",
+    "robmorgan/phinx": "^0.13.4"
+  },
+  "scripts": {
+    "test": "php ./vendor/bin/phpunit ./tests"
+  }
 }

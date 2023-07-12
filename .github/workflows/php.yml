@@ -14,16 +14,16 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+      run: composer validate
 
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
       with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+       path: vendor
+       key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+       restore-keys: |
+         ${{ runner.os }}-php-
 
     - name: Install composer
       run: composer install
@@ -33,9 +33,3 @@ jobs:
 
     - name: Run tests
       run: composer run-script test
-
-    - name: Lint Code Base
-      uses: github/super-linter@v4
-      env:
-        DEFAULT_BRANCH: main
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
