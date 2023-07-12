@@ -5,13 +5,13 @@
     "autoload": {
         "psr-4": {
             "Gibdd\\Core\\": "src/",
-            "Gibdd\\Core\\Tests": "tests/"
+            "Gibdd\\Core\\Tests\\": "tests/"
         }
     },
     "authors": [
         {
-            "name": "Lehersun",
-            "email": "kpekep@list.ru"
+            "name": "Stefan",
+            "email": "steptarget@yandex.ru"
         }
     ],
     "require-dev": {
@@ -19,9 +19,9 @@
     },
     "require": {
         "doctrine/dbal": "^3.6",
-        "lulco/phoenix": "^2.4"
+        "robmorgan/phinx": "^0.13.4"
     },
     "scripts": {
-        "test": "php .vendor/bin/phpunit ./tests"
+        "test": "php ./vendor/bin/phpunit ./tests"
     }
 }
