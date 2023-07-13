@@ -22,8 +22,7 @@ class Veteran implements JsonSerializable
          * @param string $birthday
          * @return int
          */
-        $calculateAge = function (string $birthday): int
-        {
+        $calculateAge = function (string $birthday): int {
             $birthday_timestamp = strtotime($birthday);
             $age = date('Y') - date('Y', $birthday_timestamp);
             if (date('md', $birthday_timestamp) > date('md')) {
@@ -37,8 +36,7 @@ class Veteran implements JsonSerializable
          * @param int $year
          * @return string
          */
-        $yearTextArg = function (int $year): string
-        {
+        $yearTextArg = function (int $year): string {
             $year = abs($year);
             $t1 = $year % 10;
             $t2 = $year % 100;
@@ -50,8 +48,7 @@ class Veteran implements JsonSerializable
          * @param DateTime $date
          * @return string
          */
-        $date = function (DateTime $date): string
-        {
+        $date = function (DateTime $date): string {
             $intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::MEDIUM, IntlDateFormatter::MEDIUM);
             $intlFormatter->setPattern('dd MMMM yyyy' . ' г.');
             return $intlFormatter->format($date);
@@ -60,7 +57,7 @@ class Veteran implements JsonSerializable
         $birthdate = new DateTime($this->dbRow['birth_date']);
         $validity = new DateTime($this->dbRow['certificate_validity']);
 
-        return [
+        $veteran = [
             'id' => $this->dbRow['id'],
             'firstname' => $this->dbRow['first_name'],
             'lastname' => $this->dbRow['last_name'],
@@ -89,6 +86,8 @@ class Veteran implements JsonSerializable
             'additionally' => $this->dbRow['additionally'],
             'yeardismissal' => $this->dbRow['year_of_dismissal'],
         ];
+
+        return array_diff($veteran, array('', NULL, false));
     }
 
 }
