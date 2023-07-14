@@ -16,7 +16,7 @@ class VeteranStorage
         $this->db = DriverManager::getConnection($config);
     }
 
-    public function veteranByLastName(string $lastName): Veteran
+    public function veteranByLastName(string $lastName): array
     {
         $stmt = $this->db->prepare(
             <<<SQL
@@ -25,8 +25,12 @@ class VeteranStorage
             where last_name = :last_name;
             SQL
         );
-        $dbRow = $stmt->executeQuery(['last_name' => $lastName]);
-        return new Veteran($dbRow->fetchAssociative());
+        $dbRows = $stmt->executeQuery(['last_name' => $lastName]);
+        $result = [];
+        foreach ($dbRows->fetchAllAssociative() as $dbRow) {
+            $result[] = new Veteran($dbRow);
+        }
+        return $result;
     }
 
     public function allVeterans(): array
