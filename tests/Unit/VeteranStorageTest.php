@@ -5,13 +5,13 @@ namespace Gibdd\Core\Tests\Unit;
 use Gibdd\Core\VeteranStorage;
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 class VeteranStorageTest extends TestCase
 {
     public function testVeteranStorageAddData()
     {
-        require_once __DIR__ . '/../../src/config.php';
-
-        $veteran = new VeteranStorage($connectionParams);
+        $veteran = new VeteranStorage(connectVeteranDb());
 
         $data = [
             'id' => 100500,
@@ -38,7 +38,6 @@ class VeteranStorageTest extends TestCase
             'awards' => 'за выслугу лет',
             'disability' => '2 группа',
             'hostilitiesparticipation' => 'Карабах',
-            'additionally' => '',
             'yearofdismissal' => '2022',
         ];
 
@@ -47,17 +46,16 @@ class VeteranStorageTest extends TestCase
             'firstname' => 'Иван',
             'lastname' => 'Ивановванов',
             'middlename' => 'Иванович',
-            'birthdate' => '25 марта 1970 г.',
-            'age' => '53 года',
+            'birthdate' => '1970-03-25',
             'liveaddress' => 'Сочи',
             'paspaddress' => 'г. Сочи, ул. Победы д. 17 кв. 4',
             'rank' => 'майор полиции',
-            'lengthservice' => '22 года',
-            'lengthservicepolice' => '12 лет',
+            'lengthservice' => 22,
+            'lengthservicepolice' => 12,
             'retirementstatus' => 'В отставке',
             'retirementyear' => 2021,
             'certnumber' => '0219',
-            'validity' => '03 июля 2023 г.',
+            'validity' => '2023-07-03',
             'status' => 'Ветеран',
             'yearentrytopolice' => 2008,
             'duty' => 'Актив',
@@ -73,7 +71,7 @@ class VeteranStorageTest extends TestCase
 
         $veteran->addData($data);
 
-        $this->assertSame(json_encode($jsonData, JSON_UNESCAPED_UNICODE), json_encode($veteran->veteranByLastName('Ивановванов'), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(json_encode($jsonData, JSON_UNESCAPED_UNICODE), json_encode($veteran->veteranById(100500), JSON_UNESCAPED_UNICODE));
 
         $veteran->deleteData(100500);
 

@@ -17,74 +17,33 @@ class Veteran implements JsonSerializable
 
     public function jsonSerialize(): array
     {
-        /**
-         * Count age from birthday
-         * @param string $birthday
-         * @return int
-         */
-        $calculateAge = function (string $birthday): int {
-            $birthday_timestamp = strtotime($birthday);
-            $age = date('Y') - date('Y', $birthday_timestamp);
-            if (date('md', $birthday_timestamp) > date('md')) {
-                $age--;
-            }
-            return $age;
-        };
-
-        /**
-         * Add "год, года, лет" to year
-         * @param int $year
-         * @return string
-         */
-        $yearTextArg = function (int $year): string {
-            $year = abs($year);
-            $t1 = $year % 10;
-            $t2 = $year % 100;
-            return $year . ' ' . ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
-        };
-
-        /**
-         * Reformat date
-         * @param DateTime $date
-         * @return string
-         */
-        $date = function (DateTime $date): string {
-            $intlFormatter = new IntlDateFormatter('ru_RU', IntlDateFormatter::MEDIUM, IntlDateFormatter::MEDIUM);
-            $intlFormatter->setPattern('dd MMMM yyyy' . ' г.');
-            return $intlFormatter->format($date);
-        };
-
-        $birthdate = new DateTime($this->dbRow['birth_date']);
-        $validity = new DateTime($this->dbRow['certificate_validity']);
-
         $veteran = [
             'id' => $this->dbRow['id'],
             'firstname' => $this->dbRow['first_name'],
             'lastname' => $this->dbRow['last_name'],
             'middlename' => $this->dbRow['middle_name'],
-            'birthdate' => $date($birthdate),
-            'age' => $yearTextArg($calculateAge($this->dbRow['birth_date'])),
-            'liveaddress' => $this->dbRow['live_address'],
-            'paspaddress' => $this->dbRow['passport_address'],
-            'rank' => $this->dbRow['rank'],
-            'lengthservice' => $yearTextArg($this->dbRow['length_service']),
-            'lengthservicepolice' => $yearTextArg($this->dbRow['length_service_police']),
+            'birthdate' => $this->dbRow['birth_date'],
+            'liveaddress' => $this->dbRow['live_address'] ?? null,
+            'paspaddress' => $this->dbRow['passport_address'] ?? null,
+            'rank' => $this->dbRow['rank'] ?? null,
+            'lengthservice' => $this->dbRow['length_service'] ?? null,
+            'lengthservicepolice' => $this->dbRow['length_service_police'] ?? null,
             'retirementstatus' => $this->dbRow['retirement_status'],
-            'retirementyear' => $this->dbRow['retirement_year'],
-            'certnumber' => $this->dbRow['certificate_number'],
-            'validity' => $date($validity),
+            'retirementyear' => $this->dbRow['retirement_year'] ?? null,
+            'certnumber' => $this->dbRow['certificate_number'] ?? null,
+            'validity' => $this->dbRow['certificate_validity'] ?? null,
             'status' => $this->dbRow['status'],
-            'yearentrytopolice' => $this->dbRow['year_entry_to_police'],
-            'duty' => $this->dbRow['duty'],
-            'mobphone' => $this->dbRow['mobile_phone'],
-            'reservephone' => $this->dbRow['reserve_phone'],
-            'email' => $this->dbRow['email'],
-            'passport' => $this->dbRow['passport'],
-            'awards' => $this->dbRow['awards'],
-            'disability' => $this->dbRow['disability'],
-            'participation' => $this->dbRow['hostilities_participation'],
-            'additionally' => $this->dbRow['additionally'],
-            'yeardismissal' => $this->dbRow['year_of_dismissal'],
+            'yearentrytopolice' => $this->dbRow['year_entry_to_police'] ?? null,
+            'duty' => $this->dbRow['duty'] ?? null,
+            'mobphone' => $this->dbRow['mobile_phone'] ?? null,
+            'reservephone' => $this->dbRow['reserve_phone'] ?? null,
+            'email' => $this->dbRow['email'] ?? null,
+            'passport' => $this->dbRow['passport'] ?? null,
+            'awards' => $this->dbRow['awards'] ?? null,
+            'disability' => $this->dbRow['disability'] ?? null,
+            'participation' => $this->dbRow['hostilities_participation'] ?? null,
+            'additionally' => $this->dbRow['additionally'] ?? null,
+            'yeardismissal' => $this->dbRow['year_of_dismissal'] ?? null,
         ];
 
         return array_diff($veteran, array('', NULL, false));

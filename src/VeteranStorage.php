@@ -2,32 +2,21 @@
 
 namespace Gibdd\Core;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 
 class VeteranStorage
 {
     private Connection $db;
 
-    public function __construct($config)
+    public function __construct(Connection $db)
     {
-        $this->db = DriverManager::getConnection($config);
+        $this->db = $db;
     }
 
-    public function veteranByLastName(string $lastName): array
+    public function veteranById(int $id): array
     {
-        $stmt = $this->db->prepare(
-            <<<SQL
-            SELECT *
-            FROM veterans
-            where last_name = :last_name;
-            SQL
-        );
-        $dbRows = $stmt->executeQuery(['last_name' => $lastName]);
         $result = [];
-        foreach ($dbRows->fetchAllAssociative() as $dbRow) {
+        foreach ($this->db->fetchAllAssociative('SELECT * FROM veterans WHERE id IN (?)', [$id]) as $dbRow) {
             $result[] = new Veteran($dbRow);
         }
         return $result;
@@ -35,15 +24,8 @@ class VeteranStorage
 
     public function allVeterans(): array
     {
-        $dbRows = $this->db->executeQuery(
-            <<<SQL
-            SELECT *
-            FROM veterans
-            ORDER BY id ASC
-            SQL
-        );
         $result = [];
-        foreach ($dbRows->fetchAllAssociative() as $dbRow) {
+        foreach ($this->db->fetchAllAssociative('SELECT * FROM veterans') as $dbRow) {
             $result[] = new Veteran($dbRow);
         }
         return $result;
@@ -89,40 +71,33 @@ class VeteranStorage
             ->setParameter(2, $data['lastname'])
             ->setParameter(3, $data['middlename'])
             ->setParameter(4, $data['birthdate'])
-            ->setParameter(5, $data['liveaddress'])
-            ->setParameter(6, $data['passportaddress'])
-            ->setParameter(7, $data['rank'])
-            ->setParameter(8, $data['lengthservice'])
-            ->setParameter(9, $data['lengthservicepolice'])
+            ->setParameter(5, $data['liveaddress'] ?? null)
+            ->setParameter(6, $data['passportaddress'] ?? null)
+            ->setParameter(7, $data['rank'] ?? null)
+            ->setParameter(8, $data['lengthservice'] ?? null)
+            ->setParameter(9, $data['lengthservicepolice'] ?? null)
             ->setParameter(10, $data['retirementstatus'])
-            ->setParameter(11, $data['retirementyear'])
-            ->setParameter(12, $data['certificatenumber'])
-            ->setParameter(13, $data['certificatevalidity'])
+            ->setParameter(11, $data['retirementyear'] ?? null)
+            ->setParameter(12, $data['certificatenumber'] ?? null)
+            ->setParameter(13, $data['certificatevalidity'] ?? null)
             ->setParameter(14, $data['status'])
-            ->setParameter(15, $data['yearentrytopolice'])
-            ->setParameter(16, $data['duty'])
-            ->setParameter(17, $data['mobilephone'])
-            ->setParameter(18, $data['reservephone'])
-            ->setParameter(19, $data['email'])
-            ->setParameter(20, $data['passport'])
-            ->setParameter(21, $data['awards'])
-            ->setParameter(22, $data['disability'])
-            ->setParameter(23, $data['hostilitiesparticipation'])
-            ->setParameter(24, $data['additionally'])
-            ->setParameter(25, $data['yearofdismissal'])
+            ->setParameter(15, $data['yearentrytopolice'] ?? null)
+            ->setParameter(16, $data['duty'] ?? null)
+            ->setParameter(17, $data['mobilephone'] ?? null)
+            ->setParameter(18, $data['reservephone'] ?? null)
+            ->setParameter(19, $data['email'] ?? null)
+            ->setParameter(20, $data['passport'] ?? null)
+            ->setParameter(21, $data['awards'] ?? null)
+            ->setParameter(22, $data['disability'] ?? null)
+            ->setParameter(23, $data['hostilitiesparticipation'] ?? null)
+            ->setParameter(24, $data['additionally'] ?? null)
+            ->setParameter(25, $data['yearofdismissal'] ?? null)
             ->executeQuery();
     }
 
     public function deleteData(int $id): void
     {
-        $stmt = $this->db->prepare(
-            <<<SQL
-            DELETE
-            FROM veterans
-            where id = :id;
-            SQL
-        );
-        $stmt->executeQuery(['id' => $id]);
+        $this->db->executeQuery('DELETE FROM veterans where id IN (?)',[$id]);
     }
 
 }

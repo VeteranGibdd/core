@@ -6,7 +6,10 @@
     "psr-4": {
       "Gibdd\\Core\\": "src/",
       "Gibdd\\Core\\Tests\\": "tests/"
-    }
+    },
+    "files": [
+      "src/functions.php"
+    ]
   },
   "authors": [
     {
