@@ -50,7 +50,7 @@ class VeteranStorageTest extends TestCase
             'birthdate' => '25 марта 1970 г.',
             'age' => '53 года',
             'liveaddress' => 'Сочи',
-            'passaddress' => 'г. Сочи, ул. Победы д. 17 кв. 4',
+            'paspaddress' => 'г. Сочи, ул. Победы д. 17 кв. 4',
             'rank' => 'майор полиции',
             'lengthservice' => '22 года',
             'lengthservicepolice' => '12 лет',

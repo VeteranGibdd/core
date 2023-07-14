@@ -65,7 +65,7 @@ class Veteran implements JsonSerializable
             'birthdate' => $date($birthdate),
             'age' => $yearTextArg($calculateAge($this->dbRow['birth_date'])),
             'liveaddress' => $this->dbRow['live_address'],
-            'passaddress' => $this->dbRow['passport_address'],
+            'paspaddress' => $this->dbRow['passport_address'],
             'rank' => $this->dbRow['rank'],
             'lengthservice' => $yearTextArg($this->dbRow['length_service']),
             'lengthservicepolice' => $yearTextArg($this->dbRow['length_service_police']),
