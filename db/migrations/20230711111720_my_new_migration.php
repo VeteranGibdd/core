@@ -31,7 +31,7 @@ final class MyNewMigration extends AbstractMigration
             ->addColumn('length_service_police', 'integer')
             ->addColumn('retirement_status', 'text', ['null' => false])
             ->addColumn('retirement_year', 'integer')
-            ->addColumn('certificate_number', 'integer')
+            ->addColumn('certificate_number', 'text')
             ->addColumn('certificate_validity', 'text')
             ->addColumn('status', 'text', ['null' => false])
             ->addColumn('year_entry_to_police', 'integer')
