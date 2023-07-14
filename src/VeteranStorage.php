@@ -2,32 +2,21 @@
 
 namespace Gibdd\Core;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 
 class VeteranStorage
 {
     private Connection $db;
 
-    public function __construct($config)
+    public function __construct(Connection $db)
     {
-        $this->db = DriverManager::getConnection($config);
+        $this->db = $db;
     }
 
-    public function veteranByLastName(string $lastName): array
+    public function veteranById(int $id): array
     {
-        $stmt = $this->db->prepare(
-            <<<SQL
-            SELECT *
-            FROM veterans
-            where last_name = :last_name;
-            SQL
-        );
-        $dbRows = $stmt->executeQuery(['last_name' => $lastName]);
         $result = [];
-        foreach ($dbRows->fetchAllAssociative() as $dbRow) {
+        foreach ($this->db->fetchAllAssociative('SELECT * FROM veterans WHERE id IN (?)', [$id]) as $dbRow) {
             $result[] = new Veteran($dbRow);
         }
         return $result;
@@ -35,15 +24,8 @@ class VeteranStorage
 
     public function allVeterans(): array
     {
-        $dbRows = $this->db->executeQuery(
-            <<<SQL
-            SELECT *
-            FROM veterans
-            ORDER BY id ASC
-            SQL
-        );
         $result = [];
-        foreach ($dbRows->fetchAllAssociative() as $dbRow) {
+        foreach ($this->db->fetchAllAssociative('SELECT * FROM veterans') as $dbRow) {
             $result[] = new Veteran($dbRow);
         }
         return $result;
