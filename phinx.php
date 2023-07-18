@@ -16,13 +16,9 @@ return
         ],
         'development' => [
             'adapter' => 'sqlite',
-            'name' => './db/veterans',
+            'name' => './tests/veterans',
             'suffix' => '.sqlite3',
         ],
-        'testing' => [
-            'adapter' => 'sqlite',
-            'memory' => 'true',
-        ]
     ],
     'version_order' => 'creation'
 ];
