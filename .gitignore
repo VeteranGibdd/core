@@ -3,4 +3,3 @@ vendor/
 composer.lock
 .DS_Store
 db/veterans.sqlite3
-tests/veterans.sqlite3
