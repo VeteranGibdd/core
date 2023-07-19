@@ -18,35 +18,49 @@ final class MyNewMigration extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('veterans');
+        $tableVeterans = $this->table('veterans');
+        $tablePassports = $this->table('passports');
+        $tableDuty = $this->table('duty');
+        $tableRetirement = $this->table('retirement');
 
-        $table->addColumn('first_name', 'text', ['null' => false])
-            ->addColumn('last_name', 'text', ['null' => false])
-            ->addColumn('middle_name', 'text', ['null' => false])
-            ->addColumn('birth_date', 'text', ['null' => false])
-            ->addColumn('live_address', 'text')
-            ->addColumn('passport_address', 'text')
-            ->addColumn('rank', 'text')
-            ->addColumn('length_service', 'integer')
-            ->addColumn('length_service_police', 'integer')
-            ->addColumn('retirement_status', 'text', ['null' => false])
-            ->addColumn('retirement_year', 'integer')
-            ->addColumn('certificate_number', 'text')
-            ->addColumn('certificate_validity', 'text')
-            ->addColumn('status', 'text', ['null' => false])
-            ->addColumn('year_entry_to_police', 'integer')
-            ->addColumn('duty', 'text')
-            ->addColumn('mobile_phone', 'text')
-            ->addColumn('reserve_phone', 'text')
-            ->addColumn('email', 'text')
-            ->addColumn('passport', 'text')
-            ->addColumn('awards', 'text')
-            ->addColumn('disability', 'text')
-            ->addColumn('hostilities_participation', 'text')
-            ->addColumn('additionally', 'text')
-            ->addColumn('year_of_dismissal', 'integer')
-            ->addTimestamps()
-            ->addIndex(['id', 'passport'], ['unique' => true])
-            ->create();
+        $tableVeterans->addColumn('first_name', 'text', ['null' => false]);
+        $tableVeterans->addColumn('last_name', 'text', ['null' => false]);
+        $tableVeterans->addColumn('middle_name', 'text', ['null' => false]);
+        $tableVeterans->addColumn('birth_date', 'text', ['null' => false]);
+        $tableVeterans->addColumn('live_address', 'text');
+        $tableVeterans->addColumn('mobile_phone', 'text');
+        $tableVeterans->addColumn('reserve_phone', 'text');
+        $tableVeterans->addColumn('email', 'text');
+        $tableVeterans->addColumn('additionally', 'text');
+        $tableVeterans->addTimestamps();
+        $tableVeterans->addIndex(['id'], ['unique' => true]);
+        $tableVeterans->create();
+
+        $tablePassports->addColumn('address', 'text');
+        $tablePassports->addColumn('serial_number', 'text');
+        $tablePassports->addTimestamps();
+        $tablePassports->addIndex(['id'], ['unique' => true]);
+        $tablePassports->create();
+
+        $tableRetirement->addColumn('status', 'text', ['null' => false]);
+        $tableRetirement->addColumn('year_entry_to_veteran_org', 'integer');
+        $tableRetirement->addColumn('certificate_number', 'text');
+        $tableRetirement->addColumn('certificate_validity', 'text');
+        $tableRetirement->addTimestamps();
+        $tableRetirement->addIndex(['id'], ['unique' => true]);
+        $tableRetirement->create();
+
+        $tableDuty->addColumn('rank', 'text');
+        $tableDuty->addColumn('length_service', 'integer');
+        $tableDuty->addColumn('length_service_police', 'integer');
+        $tableDuty->addColumn('retirement_status', 'text');
+        $tableDuty->addColumn('retirement_year', 'integer');
+        $tableDuty->addColumn('duty', 'text');
+        $tableDuty->addColumn('awards', 'text');
+        $tableDuty->addColumn('disability', 'text');
+        $tableDuty->addColumn('hostilities_participation', 'text');
+        $tableDuty->addTimestamps();
+        $tableDuty->addIndex(['id'], ['unique' => true]);
+        $tableDuty->create();
     }
 }

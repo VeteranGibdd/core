@@ -8,7 +8,6 @@ use stdClass;
 class VeteranStorageTest extends TestDbCase
 {
     private VeteranStorage $veteran;
-    private stdClass $data;
 
     protected function setUp(): void
     {
@@ -16,7 +15,11 @@ class VeteranStorageTest extends TestDbCase
 
         $this->veteran = new VeteranStorage(self::$db);
 
-        $this->data = (object)[
+    }
+
+    private function veteran(): \stdClass
+    {
+        return (object)[
             'id' => 100500,
             'firstName' => 'Иван',
             'lastName' => 'Ивановванов',
@@ -32,7 +35,7 @@ class VeteranStorageTest extends TestDbCase
             'certificateNumber' => '0219',
             'certificateValidity' => '2023-07-03',
             'status' => 'Ветеран',
-            'yearEntryToPolice' => 2008,
+            'yearEntryToVeteranOrg' => 2008,
             'duty' => 'Актив',
             'mobilePhone' => '89881234567',
             'reservePhone' => '89887654321',
@@ -41,11 +44,23 @@ class VeteranStorageTest extends TestDbCase
             'awards' => 'за выслугу лет',
             'disability' => '2 группа',
             'hostilitiesParticipation' => 'Карабах',
-            'yearOfDismissal' => '2022',
         ];
     }
 
-    public function testAddData(): void
+    public function minVeteran(): \stdClass
+    {
+        return (object)[
+            'id' => 100500,
+            'firstName' => 'Иван',
+            'lastName' => 'Ивановванов',
+            'middleName' => 'Иванович',
+            'birthDate' => '1970-03-25',
+            'status' => 'Ветеран',
+            'yearEntryToVeteranOrg' => 2008,
+        ];
+    }
+
+    public function testAdd(): void
     {
         $jsonData = [
             'id' => 100500,
@@ -63,7 +78,7 @@ class VeteranStorageTest extends TestDbCase
             'certNumber' => '0219',
             'validity' => '2023-07-03',
             'status' => 'Ветеран',
-            'yearEntryToPolice' => 2008,
+            'yearEntryToVeteranOrg' => 2008,
             'duty' => 'Актив',
             'mobilePhone' => '89881234567',
             'reservePhone' => '89887654321',
@@ -72,20 +87,20 @@ class VeteranStorageTest extends TestDbCase
             'awards' => 'за выслугу лет',
             'disability' => '2 группа',
             'hostilitiesParticipation' => 'Карабах',
-            'yearOfDismissal' => 2022,
         ];
 
-        $this->veteran->addData($this->data);
+        $this->veteran->add($this->veteran());
 
-        $this->assertSame(json_encode($jsonData, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId(100500), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(json_encode($jsonData, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId($this->veteran()->id), JSON_UNESCAPED_UNICODE));
     }
 
-    public function testUpdateData(): void
+    public function testUpdate(): void
     {
+        $updateData = $this->veteran();
         $updateData = (object)[
             'lastName' => 'Крутой',
             'email' => 'cool@mail.ru',
-            'passport' => '03 22 689594',
+            'passport' => '03 22 689594'
         ];
 
         $updatedJsonData = [
@@ -104,7 +119,7 @@ class VeteranStorageTest extends TestDbCase
             'certNumber' => '0219',
             'validity' => '2023-07-03',
             'status' => 'Ветеран',
-            'yearEntryToPolice' => 2008,
+            'yearEntryToVeteranOrg' => 2008,
             'duty' => 'Актив',
             'mobilePhone' => '89881234567',
             'reservePhone' => '89887654321',
@@ -113,22 +128,68 @@ class VeteranStorageTest extends TestDbCase
             'awards' => 'за выслугу лет',
             'disability' => '2 группа',
             'hostilitiesParticipation' => 'Карабах',
-            'yearOfDismissal' => 2022,
         ];
 
-        $this->veteran->addData($this->data);
+        $this->veteran->add($this->veteran());
 
-        $this->veteran->updateById($updateData, 100500);
+        $this->veteran->update($updateData, $this->veteran()->id);
 
-        $this->assertSame(json_encode($updatedJsonData, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId(100500), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(json_encode($updatedJsonData, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId($this->veteran()->id), JSON_UNESCAPED_UNICODE));
     }
 
-    public function testDeleteData(): void
+    public function testDelete(): void
     {
-        $this->veteran->addData($this->data);
+        $this->veteran->add($this->veteran());
 
-        $this->veteran->deleteData();
+        $this->veteran->delete($this->veteran()->id);
 
         $this->assertSame('[]', json_encode($this->veteran->allVeterans()));
     }
+
+    public function testMinAdd(): void
+    {
+        $jsonData = [
+            'id' => 100500,
+            'firstName' => 'Иван',
+            'lastName' => 'Ивановванов',
+            'middleName' => 'Иванович',
+            'birthDate' => '1970-03-25',
+            'status' => 'Ветеран',
+            'yearEntryToVeteranOrg' => 2008,
+        ];
+
+        $this->veteran->add($this->minVeteran());
+
+        $this->assertSame(json_encode($jsonData, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId($this->minVeteran()->id), JSON_UNESCAPED_UNICODE));
+    }
+
+    public function tstMinUpdate(): void
+    {
+        $updateData = $this->minVeteran();
+        $updateData = (object)[
+            'lastName' => 'Крутой',
+            'email' => 'cool@mail.ru',
+            'passport' => '03 22 689594'
+        ];
+
+        $updatedJsonData = [
+            'id' => 100500,
+            'firstName' => 'Иван',
+            'lastName' => 'Крутой',
+            'middleName' => 'Иванович',
+            'birthDate' => '1970-03-25',
+            'status' => 'Ветеран',
+            'yearEntryToPolice' => 2008,
+            'email' => 'cool@mail.ru',
+            'passport' => '03 22 689594'
+        ];
+
+        $this->veteran->add($this->minVeteran());
+
+        $this->veteran->update($updateData, $this->minVeteran()->id);
+
+        $this->assertSame(json_encode($updatedJsonData, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId($this->minVeteran()->id), JSON_UNESCAPED_UNICODE));
+
+    }
+
 }

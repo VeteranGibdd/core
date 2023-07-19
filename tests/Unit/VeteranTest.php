@@ -16,7 +16,7 @@ class VeteranTest extends TestCase
             'middle_name' => 'Деппович',
             'birth_date' => '1978-05-27',
             'live_address' => 'Хоста',
-            'passport_address' => 'г.Сочи, Хоста, п. Кудепста, ул. Калиновая, д.6',
+            'address' => 'г.Сочи, Хоста, п. Кудепста, ул. Калиновая, д.6',
             'rank' => 'Капитан полиции',
             'length_service' => 31,
             'length_service_police' => 20,
@@ -25,17 +25,16 @@ class VeteranTest extends TestCase
             'certificate_number' => 0205,
             'certificate_validity' => '2023-07-03',
             'status' => 'Ветеран',
-            'year_entry_to_police' => 2012,
+            'year_entry_to_veteran_org' => 2012,
             'duty' => 'Актив',
             'mobile_phone' => '89881234567',
             'reserve_phone' => '2123456',
             'email' => 'test@mail.ru',
-            'passport' => '03 20 682534',
+            'serial_number' => '03 20 682534',
             'awards' => 'за выслугу лет',
             'disability' => '2 группа',
             'hostilities_participation' => 'Карабах',
             'additionally' => '',
-            'year_of_dismissal' => 2022,
         ];
 
         $vetDataJson = [
@@ -54,7 +53,7 @@ class VeteranTest extends TestCase
             'certNumber' => 0205,
             'validity' => '2023-07-03',
             'status' => 'Ветеран',
-            'yearEntryToPolice' => 2012,
+            'yearEntryToVeteranOrg' => 2012,
             'duty' => 'Актив',
             'mobilePhone' => '89881234567',
             'reservePhone' => '2123456',
@@ -63,7 +62,6 @@ class VeteranTest extends TestCase
             'awards' => 'за выслугу лет',
             'disability' => '2 группа',
             'hostilitiesParticipation' => 'Карабах',
-            'yearOfDismissal' => 2022,
         ];
 
         $veteran = new Veteran($vetData);

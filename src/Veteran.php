@@ -22,21 +22,21 @@ class Veteran implements JsonSerializable
             'middleName' => $this->dbRow['middle_name'],
             'birthDate' => $this->dbRow['birth_date'],
             'liveAddress' => $this->dbRow['live_address'] ?? null,
-            'passportAddress' => $this->dbRow['passport_address'] ?? null,
+            'passportAddress' => $this->dbRow['address'] ?? null,
             'rank' => $this->dbRow['rank'] ?? null,
             'lengthService' => $this->dbRow['length_service'] ?? null,
             'lengthServicePolice' => $this->dbRow['length_service_police'] ?? null,
-            'retirementStatus' => $this->dbRow['retirement_status'],
+            'retirementStatus' => $this->dbRow['retirement_status'] ?? null,
             'retirementYear' => $this->dbRow['retirement_year'] ?? null,
             'certNumber' => $this->dbRow['certificate_number'] ?? null,
             'validity' => $this->dbRow['certificate_validity'] ?? null,
-            'status' => $this->dbRow['status'],
-            'yearEntryToPolice' => $this->dbRow['year_entry_to_police'] ?? null,
+            'status' => $this->dbRow['status'] ?? null,
+            'yearEntryToVeteranOrg' => $this->dbRow['year_entry_to_veteran_org'] ?? null,
             'duty' => $this->dbRow['duty'] ?? null,
             'mobilePhone' => $this->dbRow['mobile_phone'] ?? null,
             'reservePhone' => $this->dbRow['reserve_phone'] ?? null,
             'email' => $this->dbRow['email'] ?? null,
-            'passport' => $this->dbRow['passport'] ?? null,
+            'passport' => $this->dbRow['serial_number'] ?? null,
             'awards' => $this->dbRow['awards'] ?? null,
             'disability' => $this->dbRow['disability'] ?? null,
             'hostilitiesParticipation' => $this->dbRow['hostilities_participation'] ?? null,
@@ -44,7 +44,7 @@ class Veteran implements JsonSerializable
             'yearOfDismissal' => $this->dbRow['year_of_dismissal'] ?? null,
         ];
 
-        return array_diff($veteran, array('', NULL, false));
+        return array_diff($veteran, array(NULL));
     }
 
 }
