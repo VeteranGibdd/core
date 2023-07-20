@@ -54,7 +54,7 @@
       }
     },
     "policeDuty": {
-      "$ref": ""
+      "$ref": "#/definitions/policeDuty"
     },
     "disability": {
       "description": "Veteran's disability group",
