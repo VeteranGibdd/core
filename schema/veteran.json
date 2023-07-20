@@ -1,58 +1,40 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://json-schema.org/draft/2020-12/schema#",
+  "$id": "https://vetaran.ru/schema/veteran.json#",
   "title": "Veteran's data",
   "description": "All data about veteran",
   "type": "object",
   "properties": {
     "id": {
-      "description": "The unique identifier for a veteran",
       "type": "integer",
       "minimum": 1
     },
     "firstName": {
-      "description": "Veteran's first name",
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 50
+      "type": "string"
     },
     "lastName": {
-      "description": "Veteran's last name",
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 50
+      "type": "string"
     },
     "middleName": {
-      "description": "Veteran's middle name",
-      "type": "string",
-      "maxLength": 50
+      "type": "string"
     },
     "birthDate": {
-      "description": "Veteran's date of birth",
       "type": "string",
       "format": "date"
     },
-    "liveAddress": {
-      "description": "Veteran's residential address",
+    "district": {
+      "type": "string"
+    },
+    "address": {
       "type": "string"
     },
     "mobilePhone": {
-      "description": "Veteran's mobile phone number",
-      "type": "string",
-      "format": "phone",
-      "minLength": 10,
-      "maxLength": 17,
-      "pattern": "^[+]?[0-9]{1}[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4}$"
+      "type": "string"
     },
     "reservePhone": {
-      "description": "Veteran's reserve phone number",
-      "type": "string",
-      "format": "phone",
-      "minLength": 7,
-      "maxLength": 17
+      "type": "string"
     },
     "email": {
-      "description": "Veteran's email address",
       "type": "string",
       "format": "email"
     },
@@ -60,82 +42,49 @@
       "description": "Veteran's passport data",
       "type": "object",
       "properties": {
-        "address": {
-          "description": "Veteran's registered address",
+        "serial": {
           "type": "string"
         },
-        "serialNumber": {
-          "description": "Veteran's passport serial and number",
-          "type": "string",
-          "minLength": 10
+        "number": {
+          "type": "string"
+        },
+        "dateOfIssue": {
+          "type": "string"
         }
       }
     },
     "policeDuty": {
-      "description": "Veteran's data of duty in traffic police",
-      "type": "object",
-      "properties": {
-        "rank": {
-          "description": "Veteran's traffic police rank",
-          "type": "string"
-        },
-        "lengthService": {
-          "description": "Veteran's total length of service",
-          "type": "integer"
-        },
-        "lengthServicePolice": {
-          "description": "Veteran's length of service in the traffic police",
-          "type": "integer"
-        },
-        "retirementStatus": {
-          "description": "Veteran's status",
-          "type": "string",
-          "enum": [
-            "Действующий",
-            "В отставке"
-          ]
-        },
-        "retirementYear": {
-          "description": "Year when veteran retired",
-          "type": "integer",
-          "minimum": 1900,
-          "maximum": 2050
-        },
-        "duty": {
-          "description": "Veteran's duties",
-          "type": "string"
-        },
-        "awards": {
-          "description": "Veteran's awards",
-          "type": "string"
-        },
-        "disability": {
-          "description": "Veteran's disability group",
-          "type": "integer",
-          "enum": [
-            1,
-            2,
-            3
-          ]
-        },
-        "hostilitiesParticipation": {
-          "description": "Veteran's participation in hostilities",
-          "type": "string"
-        }
-      }
+      "$ref": ""
     },
-    "retirement": {
-      "description": "Veteran's data about retirement",
+    "disability": {
+      "description": "Veteran's disability group",
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "organisation": {
+      "description": "Veteran's data about roles and related data with veteran organisation",
       "type": "object",
       "properties": {
-        "certNumber": {
-          "description": "Veteran's organization certificate number",
-          "type": "string"
-        },
-        "validity": {
-          "description": "Veteran's organization certificate validity",
-          "type": "string",
-          "format": "date"
+        "certificate": {
+          "type": "object",
+          "properties": {
+            "certNumber": {
+              "description": "Veteran's organization certificate number",
+              "type": "string"
+            },
+            "validity": {
+              "description": "Veteran's organization certificate validity",
+              "type": "string",
+              "format": "date"
+            },
+            "required": [
+                "certNumber", "validity"
+            ]
+          }
         },
         "status": {
           "description": "Veteran's status after retirement",
@@ -145,7 +94,11 @@
             "Член ВО"
           ]
         },
-        "yearEntryToPolice": {
+        "role": {
+          "description": "Role in Veteran's organisation",
+          "type": "string"
+        },
+        "joiningYear": {
           "description": "Year when veteran joined the veteran's organization",
           "type": "integer"
         }
@@ -155,10 +108,48 @@
   "required": [
     "birthDate",
     "firstName",
-    "id",
     "lastName",
     "middleName",
-    "retirementYear",
-    "status"
-  ]
+    "status",
+    "policeDuty"
+  ],
+  "definitions": {
+    "policeDuty": {
+      "description": "Veteran's data of duty in traffic police",
+      "type": "object",
+      "properties": {
+        "rank": {
+          "description": "Veteran's traffic police rank",
+          "type": "string"
+        },
+        "lengthService": {
+          "description": "Veteran's total length of service in police",
+          "type": "integer"
+        },
+        "lengthServiceTrafficPolice": {
+          "description": "Veteran's length of service in the traffic police",
+          "type": "integer"
+        },
+        "dutyStatus": {
+          "description": "Veteran's status",
+          "type": "string",
+          "enum": [
+            "Действующий",
+            "В отставке"
+          ]
+        },
+        "retirementYear": {
+          "description": "Year when veteran retired from police",
+          "type": "integer"
+        },
+        "awards": {
+          "type": "string"
+        },
+        "hostilitiesParticipation": {
+          "type": "string"
+        }
+      },
+      "required": ["dutyStatus"]
+    }
+  }
 }
