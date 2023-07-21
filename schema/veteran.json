@@ -62,6 +62,7 @@
     "firstName",
     "lastName",
     "middleName",
+    "district",
     "organisation",
     "policeDuty"
   ],
