@@ -5,9 +5,6 @@ namespace Gibdd\Core;
 class VeteranMapper
 {
     private \stdClass $data;
-    private int $passportId;
-    private int $dutyId;
-    private int $retirementId;
 
     public function __construct(\stdClass $data)
     {
@@ -22,69 +19,55 @@ class VeteranMapper
             'last_name' => $this->data->lastName ?? null,
             'middle_name' => $this->data->middleName ?? null,
             'birth_date' => $this->data->birthDate ?? null,
-            'live_address' => $this->data->liveAddress ?? null,
+            'district' => $this->data->district ?? null,
+            'address' => $this->data->address ?? null,
             'mobile_phone' => $this->data->mobilePhone ?? null,
             'reserve_phone' => $this->data->reservePhone ?? null,
             'email' => $this->data->email ?? null,
+            'disability' => $this->data->disability ?? null,
             'additionally' => $this->data->additionally ?? null,
         ];
 
         return array_diff($mappedRow, array(null));
-    }
-
-    public function addPassportId(int $id): int
-    {
-        return $this->passportId = $id;
     }
 
     public function mappedPassportRow(): array
     {
         $mappedRow = [
-            'id' => $this->passportId ?? null,
-            'address' => $this->data->passportAddress ?? null,
-            'serial_number' => $this->data->passport ?? null,
+            'id' => $this->data->id ?? null,
+            'serial' => $this->data->serial ?? null,
+            'number' => $this->data->number ?? null,
+            'date_of_issue' => $this->data->dateOfIssue ?? null,
         ];
 
         return array_diff($mappedRow, array(null));
-    }
-
-    public function addDutyId(int $id): int
-    {
-        return $this->dutyId = $id;
     }
 
     public function mappedDutyRow(): array
     {
         $mappedRow = [
-            'id' => $this->dutyId ?? null,
+            'id' => $this->data->id ?? null,
             'rank' => $this->data->rank ?? null,
             'length_service' => $this->data->lengthService ?? null,
-            'length_service_police' => $this->data->lengthServicePolice ?? null,
-            'retirement_status' => $this->data->retirementStatus ?? null,
+            'length_service_traffic_police' => $this->data->lengthServicePolice ?? null,
+            'duty_status' => $this->data->dutyStatus ?? null,
             'retirement_year' => $this->data->retirementYear ?? null,
-            'duty' => $this->data->duty ?? null,
             'awards' => $this->data->awards ?? null,
-            'disability' => $this->data->disability ?? null,
             'hostilities_participation' => $this->data->hostilitiesParticipation ?? null,
-            'additionally' => $this->data->additionally ?? null,
         ];
 
         return array_diff($mappedRow, array(null));
     }
 
-    public function addRetirementId(int $id): int
-    {
-        return $this->retirementId = $id;
-    }
-
-    public function mappedRetirementRow(): array
+    public function mappedOrganisationRow(): array
     {
         $mappedRow = [
-            'id' => $this->retirementId ?? null,
-            'certificate_number' => $this->data->certificateNumber ?? null,
-            'certificate_validity' => $this->data->certificateValidity ?? null,
+            'id' => $this->data->id ?? null,
+            'certificate_number' => $this->data->certNumber ?? null,
+            'certificate_validity' => $this->data->validity ?? null,
+            'role' => $this->data->role ?? null,
             'status' => $this->data->status ?? null,
-            'year_entry_to_veteran_org' => $this->data->yearEntryToVeteranOrg ?? null,
+            'joining_year' => $this->data->joiningYear ?? null,
         ];
 
         return array_diff($mappedRow, array(null));

@@ -11,7 +11,7 @@ class VeteranStorage
     const VETERANS_TABLE_NAME = 'veterans';
     const PASSPORTS_TABLE_NAME = 'passports';
     const DUTY_TABLE_NAME = 'duty';
-    const RETIREMENT_TABLE_NAME = 'retirement';
+    const ORGANISATION_TABLE_NAME = 'organisation';
     private Connection $db;
 
     public function __construct(Connection $db)
@@ -32,7 +32,7 @@ class VeteranStorage
         FROM veterans v
         LEFT JOIN passports p ON v.id = p.id
         LEFT JOIN duty d on v.id = d.id
-        LEFT JOIN retirement r on v.id = r.id
+        LEFT JOIN organisation o on v.id = o.id
 WHERE v.id IN (?)', [$id]));
     }
 
@@ -49,7 +49,7 @@ WHERE v.id IN (?)', [$id]));
         FROM veterans v
         LEFT JOIN passports p ON v.id = p.id
         LEFT JOIN duty d on v.id = d.id
-        LEFT JOIN retirement r on v.id = r.id') as $dbRow) {
+        LEFT JOIN organisation o on v.id = o.id') as $dbRow) {
             $result[] = new Veteran($dbRow);
         }
         return $result;
@@ -68,21 +68,17 @@ WHERE v.id IN (?)', [$id]));
 
         try {
             $this->db->beginTransaction();
-            $this->db->insert(self::VETERANS_TABLE_NAME, $mappedVetRow);
 
-            $passportId = $dutyId = $retirementId = $this->db->lastInsertId();
-
-            $mapper->addPassportId($passportId);
             $mappedPassportRow = $mapper->mappedPassportRow();
             $this->db->insert(self::PASSPORTS_TABLE_NAME, $mappedPassportRow);
 
-            $mapper->addDutyId($dutyId);
             $mappedDutyRow = $mapper->mappedDutyRow();
             $this->db->insert(self::DUTY_TABLE_NAME, $mappedDutyRow);
 
-            $mapper->addRetirementId($retirementId);
-            $mappedRetirementRow = $mapper->mappedRetirementRow();
-            $this->db->insert(self::RETIREMENT_TABLE_NAME, $mappedRetirementRow);
+            $mappedOrganisationRow = $mapper->mappedOrganisationRow();
+            $this->db->insert(self::ORGANISATION_TABLE_NAME, $mappedOrganisationRow);
+
+            $this->db->insert(self::VETERANS_TABLE_NAME, $mappedVetRow);
 
             $this->db->commit();
 
@@ -104,14 +100,14 @@ WHERE v.id IN (?)', [$id]));
         $mappedVetRow = $mapper->mappedVeteranRow();
         $mappedPassportRow = $mapper->mappedPassportRow();
         $mappedDutyRow = $mapper->mappedDutyRow();
-        $mappedRetirementRow = $mapper->mappedRetirementRow();
+        $mappedRetirementRow = $mapper->mappedOrganisationRow();
 
         try {
             $this->db->beginTransaction();
             $this->db->update(self::VETERANS_TABLE_NAME, $mappedVetRow, ['id' => $id]);
             $this->db->update(self::PASSPORTS_TABLE_NAME, $mappedPassportRow, ['id' => $id]);
             $this->db->update(self::DUTY_TABLE_NAME, $mappedDutyRow, ['id' => $id]);
-            $this->db->update(self::RETIREMENT_TABLE_NAME, $mappedRetirementRow, ['id' => $id]);
+            $this->db->update(self::ORGANISATION_TABLE_NAME, $mappedRetirementRow, ['id' => $id]);
 
             $this->db->commit();
 
@@ -131,9 +127,9 @@ WHERE v.id IN (?)', [$id]));
     {
         $this->db->executeQuery('
 DELETE FROM veterans WHERE id IN (?);
-DELETE FROM passports WHERE veteran_id IN (?);
-DELETE FROM retirement WHERE veteran_id IN (?);
-DELETE FROM duty WHERE veteran_id IN (?);', [$id]);
+DELETE FROM passports WHERE passports.id IN (?);
+DELETE FROM organisation WHERE organisation.id IN (?);
+DELETE FROM duty WHERE duty.id IN (?);', [$id]);
     }
 
 }

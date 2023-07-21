@@ -47,6 +47,10 @@
         3
       ]
     },
+    "additionally": {
+      "description": "Any additional information",
+      "type": "string"
+    },
     "passport": {
       "$ref": "#/definitions/passport"
     },
