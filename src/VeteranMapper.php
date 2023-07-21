@@ -5,6 +5,9 @@ namespace Gibdd\Core;
 class VeteranMapper
 {
     private \stdClass $data;
+    private int $veteranId;
+    private int $dutyId;
+    private int $organisationId;
 
     public function __construct(\stdClass $data)
     {
@@ -14,7 +17,7 @@ class VeteranMapper
     public function mappedVeteranRow(): array
     {
         $mappedRow = [
-            'id' => $this->data->id ?? null,
+            'id' => $this->veteranId ?? null,
             'first_name' => $this->data->firstName ?? null,
             'last_name' => $this->data->lastName ?? null,
             'middle_name' => $this->data->middleName ?? null,
@@ -31,6 +34,11 @@ class VeteranMapper
         return array_diff($mappedRow, array(null));
     }
 
+    public function addVeteranId(int $id): int
+    {
+        return $this->veteranId = $id;
+    }
+
     public function mappedPassportRow(): array
     {
         $mappedRow = [
@@ -43,10 +51,15 @@ class VeteranMapper
         return array_diff($mappedRow, array(null));
     }
 
+    public function addDutyId(int $id): int
+    {
+        return $this->dutyId = $id;
+    }
+
     public function mappedDutyRow(): array
     {
         $mappedRow = [
-            'id' => $this->data->id ?? null,
+            'id' => $this->dutyId ?? null,
             'rank' => $this->data->rank ?? null,
             'length_service' => $this->data->lengthService ?? null,
             'length_service_traffic_police' => $this->data->lengthServicePolice ?? null,
@@ -59,10 +72,15 @@ class VeteranMapper
         return array_diff($mappedRow, array(null));
     }
 
+    public function addOrganisationId(int $id): int
+    {
+        return $this->organisationId = $id;
+    }
+
     public function mappedOrganisationRow(): array
     {
         $mappedRow = [
-            'id' => $this->data->id ?? null,
+            'id' => $this->organisationId ?? null,
             'certificate_number' => $this->data->certNumber ?? null,
             'certificate_validity' => $this->data->validity ?? null,
             'role' => $this->data->role ?? null,

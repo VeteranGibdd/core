@@ -64,7 +64,6 @@ WHERE v.id IN (?)', [$id]));
     public function add(stdClass $data): void
     {
         $mapper = new VeteranMapper($data);
-        $mappedVetRow = $mapper->mappedVeteranRow();
 
         try {
             $this->db->beginTransaction();
@@ -72,12 +71,18 @@ WHERE v.id IN (?)', [$id]));
             $mappedPassportRow = $mapper->mappedPassportRow();
             $this->db->insert(self::PASSPORTS_TABLE_NAME, $mappedPassportRow);
 
+            $dutyId = $organisationId = $veteranId = $this->db->lastInsertId();
+
+            $mapper->addDutyId($dutyId);
             $mappedDutyRow = $mapper->mappedDutyRow();
             $this->db->insert(self::DUTY_TABLE_NAME, $mappedDutyRow);
 
+            $mapper->addOrganisationId($organisationId);
             $mappedOrganisationRow = $mapper->mappedOrganisationRow();
             $this->db->insert(self::ORGANISATION_TABLE_NAME, $mappedOrganisationRow);
 
+            $mapper->addVeteranId($veteranId);
+            $mappedVetRow = $mapper->mappedVeteranRow();
             $this->db->insert(self::VETERANS_TABLE_NAME, $mappedVetRow);
 
             $this->db->commit();
