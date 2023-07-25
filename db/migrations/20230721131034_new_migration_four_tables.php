@@ -18,8 +18,6 @@ final class NewMigrationFourTables extends AbstractMigration
      */
     public function change(): void
     {
-        $this->table('veterans')->drop()->save();
-
         $tableVeterans = $this->table('veterans');
         $tablePassports = $this->table('passports');
         $tablePoliceDuty = $this->table('duty');
@@ -36,6 +34,12 @@ final class NewMigrationFourTables extends AbstractMigration
         $tableVeterans->addColumn('email', 'text');
         $tableVeterans->addColumn('disability', 'text');
         $tableVeterans->addColumn('additionally', 'text');
+        $tableVeterans->addColumn('passport', 'integer');
+        $tableVeterans->addColumn('duty', 'integer');
+        $tableVeterans->addColumn('organisation', 'integer');
+        $tableVeterans->addForeignKey('passport', 'passports', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE']);
+        $tableVeterans->addForeignKey('duty', 'duty', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE']);
+        $tableVeterans->addForeignKey('organisation', 'organisation', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE']);
         $tableVeterans->addTimestamps();
         $tableVeterans->addIndex(['id'], ['unique' => true]);
         $tableVeterans->create();
@@ -43,6 +47,7 @@ final class NewMigrationFourTables extends AbstractMigration
         $tablePassports->addColumn('serial', 'text');
         $tablePassports->addColumn('number', 'text');
         $tablePassports->addColumn('date_of_issue', 'text');
+        $tablePassports->addForeignKey('id', 'veterans', 'passport', ['delete' => 'CASCADE', 'update' => 'CASCADE']);
         $tablePassports->addTimestamps();
         $tablePassports->addIndex(['id'], ['unique' => true]);
         $tablePassports->create();
@@ -52,6 +57,7 @@ final class NewMigrationFourTables extends AbstractMigration
         $tableOrganisation->addColumn('role', 'text');
         $tableOrganisation->addColumn('certificate_number', 'text');
         $tableOrganisation->addColumn('certificate_validity', 'text');
+        $tableOrganisation->addForeignKey('id', 'veterans', 'organisation', ['delete' => 'CASCADE', 'update' => 'CASCADE']);
         $tableOrganisation->addTimestamps();
         $tableOrganisation->addIndex(['id'], ['unique' => true]);
         $tableOrganisation->create();
@@ -63,6 +69,7 @@ final class NewMigrationFourTables extends AbstractMigration
         $tablePoliceDuty->addColumn('retirement_year', 'integer');
         $tablePoliceDuty->addColumn('awards', 'text');
         $tablePoliceDuty->addColumn('hostilities_participation', 'text');
+        $tablePoliceDuty->addForeignKey('id', 'veterans', 'duty', ['delete' => 'CASCADE', 'update' => 'CASCADE']);
         $tablePoliceDuty->addTimestamps();
         $tablePoliceDuty->addIndex(['id'], ['unique' => true]);
         $tablePoliceDuty->create();

@@ -28,27 +28,39 @@ class Veteran implements JsonSerializable
             'email' => $this->dbRow['email'] ?? null,
             'disability' => $this->dbRow['disability'] ?? null,
             'additionally' => $this->dbRow['additionally'] ?? null,
+//            'duty' => $this->dbRow['duty'] ?? null,
+//            'passport' => $this->dbRow['passport'] ?? null,
+//            'organisation' => $this->dbRow['organisation'] ?? null,
+        ];
 
+        $passport = [
             'serial' => $this->dbRow['serial'] ?? null,
             'number' => $this->dbRow['number'] ?? null,
             'dateOfIssue' => $this->dbRow['date_of_issue'] ?? null,
+        ];
 
-            'status' => $this->dbRow['status'] ?? null,
-            'joiningYear' => $this->dbRow['joining_year'] ?? null,
-            'role' => $this->dbRow['role'] ?? null,
-            'certNumber' => $this->dbRow['certificate_number'] ?? null,
-            'validity' => $this->dbRow['certificate_validity'] ?? null,
-
+        $policeDuty = [
             'rank' => $this->dbRow['rank'] ?? null,
             'lengthService' => $this->dbRow['length_service'] ?? null,
-            'lengthServicePolice' => $this->dbRow['length_service_traffic_police'] ?? null,
+            'lengthServiceTrafficPolice' => $this->dbRow['length_service_traffic_police'] ?? null,
             'dutyStatus' => $this->dbRow['duty_status'] ?? null,
             'retirementYear' => $this->dbRow['retirement_year'] ?? null,
             'awards' => $this->dbRow['awards'] ?? null,
             'hostilitiesParticipation' => $this->dbRow['hostilities_participation'] ?? null,
         ];
 
-        return array_diff($veteran, array(NULL));
+        $organisation = [
+            'status' => $this->dbRow['status'] ?? null,
+            'joiningYear' => $this->dbRow['joining_year'] ?? null,
+            'role' => $this->dbRow['role'] ?? null,
+            'certNumber' => $this->dbRow['certificate_number'] ?? null,
+            'validity' => $this->dbRow['certificate_validity'] ?? null,
+        ];
+
+        empty(array_diff($passport, array(NULL))) ? $passport = [] : $passport = ['passport' => (array_diff($passport, array(NULL)))];
+        empty(array_diff($policeDuty, array(NULL))) ? $policeDuty = [] : $policeDuty = ['policeDuty' => (array_diff($policeDuty, array(NULL)))];
+        empty(array_diff($organisation, array(NULL))) ? $organisation = [] : $organisation = ['organisation' => (array_diff($organisation, array(NULL)))];
+        return array_diff($veteran, array(NULL)) + $passport + $policeDuty + $organisation;
     }
 
 }

@@ -30,9 +30,9 @@ class VeteranStorage
         return new Veteran($this->db->fetchAssociative('
         SELECT *
         FROM veterans v
-        LEFT JOIN passports p ON v.id = p.id
-        LEFT JOIN duty d on v.id = d.id
-        LEFT JOIN organisation o on v.id = o.id
+        LEFT JOIN passports p ON v.passport = p.id
+        LEFT JOIN duty d on v.duty = d.id
+        LEFT JOIN organisation o on v.organisation = o.id
 WHERE v.id IN (?)', [$id]));
     }
 
@@ -68,21 +68,21 @@ WHERE v.id IN (?)', [$id]));
         try {
             $this->db->beginTransaction();
 
-            $mappedPassportRow = $mapper->mappedPassportRow();
-            $this->db->insert(self::PASSPORTS_TABLE_NAME, $mappedPassportRow);
-
-            $dutyId = $organisationId = $veteranId = $this->db->lastInsertId();
-
-            $mapper->addDutyId($dutyId);
             $mappedDutyRow = $mapper->mappedDutyRow();
             $this->db->insert(self::DUTY_TABLE_NAME, $mappedDutyRow);
+            $dutyId = $this->db->lastInsertId();
+            $mapper->addDutyId($dutyId);
 
-            $mapper->addOrganisationId($organisationId);
-            $mappedOrganisationRow = $mapper->mappedOrganisationRow();
+            $passportId = $this->db->lastInsertId();
+            $mappedPassportRow = $mapper->addPassportId($passportId)->mappedPassportRow();
+            $this->db->insert(self::PASSPORTS_TABLE_NAME, $mappedPassportRow);
+
+            $organisationId = $this->db->lastInsertId();
+            $mappedOrganisationRow = $mapper->addOrganisationId($organisationId)->mappedOrganisationRow();
             $this->db->insert(self::ORGANISATION_TABLE_NAME, $mappedOrganisationRow);
 
-            $mapper->addVeteranId($veteranId);
-            $mappedVetRow = $mapper->mappedVeteranRow();
+            $veteranId = $this->db->lastInsertId();
+            $mappedVetRow = $mapper->addVeteranId($veteranId)->mappedVeteranRow();
             $this->db->insert(self::VETERANS_TABLE_NAME, $mappedVetRow);
 
             $this->db->commit();
