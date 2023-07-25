@@ -58,10 +58,10 @@ WHERE v.id IN (?)', [$id]));
     /**
      * Add data to database
      * @param stdClass $data
-     * @return void
+     * @return int
      * @throws Exception
      */
-    public function add(stdClass $data): void
+    public function add(stdClass $data): int
     {
         $mapper = new VeteranMapper($data);
 
@@ -73,23 +73,31 @@ WHERE v.id IN (?)', [$id]));
             $dutyId = $this->db->lastInsertId();
             $mapper->addDutyId($dutyId);
 
+            $mappedPassportRow = $mapper->mappedPassportRow();
+            if (!empty($mappedPassportRow)) {
+                $this->db->insert(self::PASSPORTS_TABLE_NAME, $mappedPassportRow);
+            }
             $passportId = $this->db->lastInsertId();
-            $mappedPassportRow = $mapper->addPassportId($passportId)->mappedPassportRow();
-            $this->db->insert(self::PASSPORTS_TABLE_NAME, $mappedPassportRow);
+            $mapper->addPassportId($passportId);
 
-            $organisationId = $this->db->lastInsertId();
-            $mappedOrganisationRow = $mapper->addOrganisationId($organisationId)->mappedOrganisationRow();
+            $mappedOrganisationRow = $mapper->mappedOrganisationRow();
             $this->db->insert(self::ORGANISATION_TABLE_NAME, $mappedOrganisationRow);
+            $organisationId = $this->db->lastInsertId();
+            $mapper->addOrganisationId($organisationId);
 
-            $veteranId = $this->db->lastInsertId();
-            $mappedVetRow = $mapper->addVeteranId($veteranId)->mappedVeteranRow();
+            $mappedVetRow = $mapper->mappedVeteranRow();
             $this->db->insert(self::VETERANS_TABLE_NAME, $mappedVetRow);
+            $veteranId = $this->db->lastInsertId();
+            $mapper->addVeteranId($veteranId);
 
             $this->db->commit();
 
         } catch (\Exception $exception) {
             $this->db->rollBack();
+            throw $exception;
         }
+
+        return $veteranId;
     }
 
     /**
@@ -110,7 +118,9 @@ WHERE v.id IN (?)', [$id]));
         try {
             $this->db->beginTransaction();
             $this->db->update(self::VETERANS_TABLE_NAME, $mappedVetRow, ['id' => $id]);
-            $this->db->update(self::PASSPORTS_TABLE_NAME, $mappedPassportRow, ['id' => $id]);
+            if (!empty($mappedPassportRow)) {
+                $this->db->update(self::PASSPORTS_TABLE_NAME, $mappedPassportRow, ['id' => $id]);
+            }
             $this->db->update(self::DUTY_TABLE_NAME, $mappedDutyRow, ['id' => $id]);
             $this->db->update(self::ORGANISATION_TABLE_NAME, $mappedRetirementRow, ['id' => $id]);
 
@@ -118,6 +128,7 @@ WHERE v.id IN (?)', [$id]));
 
         } catch (\Exception $exception) {
             $this->db->rollBack();
+            throw $exception;
         }
 
     }

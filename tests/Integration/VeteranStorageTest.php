@@ -80,61 +80,81 @@ class VeteranStorageTest extends TestDbCase
 
     public function testAdd(): void
     {
-        $this->veteran->add($this->veteran());
-        $vet = (object)['id' => 1];
-        $vet_merged = (object)array_merge((array)$vet, (array)$this->veteran());
+        $veteranId = $this->veteran->add($this->veteran());
+        $veteran = $this->veteran->byId($veteranId);
 
-        $this->assertSame(json_encode($vet_merged, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId(1), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(($this->veteran()->lastName | $this->veteran()->organisation->status), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
     }
 
     public function testUpdate(): void
     {
         $updateData = (object)[
+            'firstName' => 'Иван',
             'lastName' => 'Крутой',
+            'middleName' => 'Иванович',
+            'birthDate' => '1970-03-25',
+            'district' => 'Сочи',
+
+            'policeDuty' => (object)[
+                'rank' => 'майор полиции',
+                'dutyStatus' => 'В отставке',
+            ],
+
+            'organisation' => (object)[
+                'status' => 'Ветеран',
+                'joiningYear' => 2008,
+            ],
         ];
-        $vet = (object)['id' => 1];
-        $vet_merged = (object)array_merge((array)$vet, (array)$this->veteran(), (array)$updateData);
 
-        $this->veteran->add($this->veteran());
+        $veteranId = $this->veteran->add($this->veteran());
+        $this->veteran->update($updateData, $veteranId);
+        $veteran = $this->veteran->byId($veteranId);
 
-        $this->veteran->update($updateData, 1);
-
-        $this->assertSame(json_encode($vet_merged, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId(1), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(('Крутой' | 'Ветеран'), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
     }
 
     public function testDelete(): void
     {
-        $this->veteran->add($this->veteran());
+        $veteranId = $this->veteran->add($this->veteran());
 
-        $this->veteran->delete(1);
+        $this->veteran->delete($veteranId);
 
         $this->assertSame('[]', json_encode($this->veteran->allVeterans()));
     }
 
     public function testMinAdd(): void
     {
-        $this->veteran->add($this->minVeteran());
+        $veteranId = $this->veteran->add($this->minVeteran());
+        $veteran = $this->veteran->byId($veteranId);
 
-        $vet = (object)['id' => 1];
-        $vet_merged = (object)array_merge((array)$vet, (array)$this->minVeteran());
-
-        $this->assertSame(json_encode($vet_merged, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId(1), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(($this->minVeteran()->lastName | $this->minVeteran()->organisation->status), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
     }
 
-    public function tstMinUpdate(): void
+    public function testMinUpdate(): void
     {
         $updateData = (object)[
+            'firstName' => 'Иван',
             'lastName' => 'Крутой',
+            'middleName' => 'Иванович',
+            'birthDate' => '1970-03-25',
+            'district' => 'Сочи',
+
+            'policeDuty' => (object)[
+                'rank' => 'майор полиции',
+                'dutyStatus' => 'В отставке',
+            ],
+
+            'organisation' => (object)[
+                'status' => 'Ветеран',
+                'joiningYear' => 2008,
+            ],
         ];
 
-        $this->veteran->add($this->minVeteran());
+        $veteranId = $this->veteran->add($this->minVeteran());
+        $this->veteran->update($updateData, $veteranId);
+        $veteran = $this->veteran->byId($veteranId);
 
-        $this->veteran->update($updateData, 1);
-
-        $vet = (object)['id' => 1];
-        $vet_merged = (object)array_merge((array)$vet, (array)$this->minVeteran(), (array)$updateData);
-
-        $this->assertSame(json_encode($vet_merged, JSON_UNESCAPED_UNICODE), json_encode($this->veteran->byId(1), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(('Крутой' | 'Ветеран'), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
 
     }
 

@@ -28,9 +28,6 @@ class Veteran implements JsonSerializable
             'email' => $this->dbRow['email'] ?? null,
             'disability' => $this->dbRow['disability'] ?? null,
             'additionally' => $this->dbRow['additionally'] ?? null,
-//            'duty' => $this->dbRow['duty'] ?? null,
-//            'passport' => $this->dbRow['passport'] ?? null,
-//            'organisation' => $this->dbRow['organisation'] ?? null,
         ];
 
         $passport = [
