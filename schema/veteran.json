@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vetaran.ru/schema/veteran.json#",
+  "title": "Veteran's data",
+  "description": "All data about veteran",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "birthDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "district": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "mobilePhone": {
+      "type": "string"
+    },
+    "reservePhone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "disability": {
+      "description": "Veteran's disability group",
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "additionally": {
+      "description": "Any additional information",
+      "type": "string"
+    },
+    "passport": {
+      "$ref": "#/definitions/passport"
+    },
+    "policeDuty": {
+      "$ref": "#/definitions/policeDuty"
+    },
+    "organisation": {
+      "$ref": "#/definitions/organisation"
+    }
+  },
+  "required": [
+    "birthDate",
+    "firstName",
+    "lastName",
+    "middleName",
+    "district",
+    "organisation",
+    "policeDuty"
+  ],
+  "definitions": {
+    "policeDuty": {
+      "description": "Veteran's data of duty in traffic police",
+      "type": "object",
+      "properties": {
+        "rank": {
+          "description": "Veteran's traffic police rank",
+          "type": "string"
+        },
+        "lengthService": {
+          "description": "Veteran's total length of service in police",
+          "type": "number"
+        },
+        "lengthServiceTrafficPolice": {
+          "description": "Veteran's length of service in the traffic police",
+          "type": "number"
+        },
+        "dutyStatus": {
+          "description": "Veteran's status",
+          "type": "string",
+          "enum": [
+            "Действующий",
+            "В отставке"
+          ]
+        },
+        "retirementYear": {
+          "description": "Year when veteran retired from police",
+          "type": "integer"
+        },
+        "awards": {
+          "type": "string"
+        },
+        "hostilitiesParticipation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rank",
+        "dutyStatus"
+      ]
+    },
+    "passport": {
+      "description": "Veteran's passport data",
+      "type": "object",
+      "properties": {
+        "serial": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "dateOfIssue": {
+          "type": "string"
+        },
+        "required": [
+          "serial",
+          "number",
+          "dateOfIssue"
+        ]
+      }
+    },
+    "organisation": {
+      "description": "Veteran's data about roles and related data with veteran organisation",
+      "type": "object",
+      "properties": {
+        "certificate": {
+          "type": "object",
+          "properties": {
+            "certNumber": {
+              "description": "Veteran's organization certificate number",
+              "type": "string"
+            },
+            "validity": {
+              "description": "Veteran's organization certificate validity",
+              "type": "string",
+              "format": "date"
+            },
+            "required": [
+              "certNumber",
+              "validity"
+            ]
+          }
+        },
+        "status": {
+          "description": "Veteran's status after retirement",
+          "type": "string",
+          "enum": [
+            "Ветеран",
+            "Член ВО"
+          ]
+        },
+        "role": {
+          "description": "Role in Veteran's organisation",
+          "type": "string"
+        },
+        "joiningYear": {
+          "description": "Year when veteran joined the veteran's organization",
+          "type": "integer"
+        },
+        "required": [
+          "status",
+          "joiningYear"
+        ]
+      }
+    }
+  }
+}
