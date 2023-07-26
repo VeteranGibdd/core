@@ -20,7 +20,8 @@
   },
   "require": {
     "doctrine/dbal": "^3.6",
-    "robmorgan/phinx": "^0.13.4"
+    "robmorgan/phinx": "^0.13.4",
+    "opis/json-schema": "^2.3"
   },
   "scripts": {
     "test": "php ./vendor/bin/phpunit ./tests"

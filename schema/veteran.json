@@ -52,13 +52,13 @@
       "type": "string"
     },
     "passport": {
-      "$ref": "#/definitions/passport"
+      "$ref": "#/$defs/passport"
     },
     "policeDuty": {
-      "$ref": "#/definitions/policeDuty"
+      "$ref": "#/$defs/policeDuty"
     },
     "organisation": {
-      "$ref": "#/definitions/organisation"
+      "$ref": "#/$defs/organisation"
     }
   },
   "required": [
@@ -70,7 +70,7 @@
     "organisation",
     "policeDuty"
   ],
-  "definitions": {
+  "$defs": {
     "policeDuty": {
       "description": "Veteran's data of duty in traffic police",
       "type": "object",
@@ -123,13 +123,13 @@
         },
         "dateOfIssue": {
           "type": "string"
-        },
-        "required": [
-          "serial",
-          "number",
-          "dateOfIssue"
-        ]
-      }
+        }
+      },
+      "required": [
+        "serial",
+        "number",
+        "dateOfIssue"
+      ]
     },
     "organisation": {
       "description": "Veteran's data about roles and related data with veteran organisation",
@@ -146,12 +146,12 @@
               "description": "Veteran's organization certificate validity",
               "type": "string",
               "format": "date"
-            },
-            "required": [
-              "certNumber",
-              "validity"
-            ]
-          }
+            }
+          },
+          "required": [
+            "certNumber",
+            "validity"
+          ]
         },
         "status": {
           "description": "Veteran's status after retirement",
@@ -168,12 +168,12 @@
         "joiningYear": {
           "description": "Year when veteran joined the veteran's organization",
           "type": "integer"
-        },
-        "required": [
-          "status",
-          "joiningYear"
-        ]
-      }
+        }
+      },
+      "required": [
+        "status",
+        "joiningYear"
+      ]
     }
   }
 }
