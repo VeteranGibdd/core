@@ -4,6 +4,7 @@ namespace Gibdd\Core\Tests\Unit;
 
 use Gibdd\Core\Veteran;
 use PHPUnit\Framework\TestCase;
+use function Gibdd\Core\testVeteranValidation;
 
 class VeteranTest extends TestCase
 {
@@ -19,7 +20,7 @@ class VeteranTest extends TestCase
             'address' => 'г. Сочи, ул. Победы д. 17 кв. 4',
             'mobile_phone' => '89881234567',
             'reserve_phone' => '89887654321',
-            'disability' => '2 группа',
+            'disability' => 2,
             'email' => 'test2@mail.ru',
 
 //            'passport' => [
@@ -58,7 +59,7 @@ class VeteranTest extends TestCase
             'mobilePhone' => '89881234567',
             'reservePhone' => '89887654321',
             'email' => 'test2@mail.ru',
-            'disability' => '2 группа',
+            'disability' => 2,
 
             'passport' => [
                 'serial' => '0322',
@@ -86,6 +87,8 @@ class VeteranTest extends TestCase
         ];
 
         $veteran = new Veteran($vetData);
+
+        testVeteranValidation(json_encode($veteran, JSON_UNESCAPED_UNICODE));
 
         $this->assertSame(json_encode($vetDataJson, JSON_UNESCAPED_UNICODE), json_encode($veteran, JSON_UNESCAPED_UNICODE));
     }

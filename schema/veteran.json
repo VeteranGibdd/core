@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://vetaran.ru/schema/veteran.json#",
+  "$id": "https://veteran.ru/schema/veteran.json#",
   "title": "Veteran's data",
   "description": "All data about veteran",
   "type": "object",
