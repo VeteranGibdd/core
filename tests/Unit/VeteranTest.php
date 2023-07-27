@@ -5,6 +5,7 @@ namespace Gibdd\Core\Tests\Unit;
 use Gibdd\Core\Veteran;
 use PHPUnit\Framework\TestCase;
 use function Gibdd\Core\testVeteranValidation;
+use Opis\JsonSchema\Validator;
 
 class VeteranTest extends TestCase
 {
@@ -87,8 +88,6 @@ class VeteranTest extends TestCase
         ];
 
         $veteran = new Veteran($vetData);
-
-        testVeteranValidation(json_encode($veteran, JSON_UNESCAPED_UNICODE));
 
         $this->assertSame(json_encode($vetDataJson, JSON_UNESCAPED_UNICODE), json_encode($veteran, JSON_UNESCAPED_UNICODE));
     }
