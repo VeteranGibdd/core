@@ -16,11 +16,14 @@
   ],
   "require-dev": {
     "phpunit/phpunit": "^9.6",
-    "phpstan/phpstan": "^1.10"
+    "phpstan/phpstan": "^1.10",
+    "mockery/mockery": "^1.6"
   },
   "require": {
     "doctrine/dbal": "^3.6",
-    "robmorgan/phinx": "^0.13.4"
+    "robmorgan/phinx": "^0.13.4",
+    "ifedko/php-doctrine-dbal-pagination": "^3.0",
+    "ext-pdo": "*"
   },
   "scripts": {
     "test": "php ./vendor/bin/phpunit ./tests"
