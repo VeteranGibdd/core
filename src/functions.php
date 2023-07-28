@@ -2,32 +2,29 @@
 
 namespace Gibdd\Core;
 
+use Gibdd\Core\Exceptions\ValidationException;
 use Opis\JsonSchema\{
     Validator,
-    ValidationResult,
     Errors\ErrorFormatter,
 };
 
-function testVeteranValidation(\stdClass|string $data, Validator $validator, string $schemaId): bool
+/**
+ * @param Validator $validator
+ * @param string $schemaName
+ * @param \StdClass $data
+ * @return void
+ * @throws ValidationException
+ */
+function validateSchema(Validator $validator, string $schemaName, \StdClass $data): void
 {
-    if (is_string($data)) {
-        $data = json_decode($data);
-    }
+    $schema = __DIR__ . "/../schema/$schemaName.json";
+    $schemaId = "https://veteran.ru/schema/$schemaName.json#";
 
-    /** @var ValidationResult $result */
+    $validator->resolver()->registerFile($schemaId, $schema);
+
     $result = $validator->validate($data, $schemaId);
 
-    try {
-
-        if ($result->isValid()) {
-            return true;
-        } else {
-            throw new \Exception(print_r((new ErrorFormatter())->format($result->error()), true));
-        }
-
-    } catch (\Exception $e) {
-        echo $e->getMessage();
-        return false;
+    if (!$result->isValid()) {
+        throw new ValidationException(print_r((new ErrorFormatter())->format($result->error()), true));
     }
-
 }
