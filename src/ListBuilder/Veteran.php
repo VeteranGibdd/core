@@ -18,7 +18,7 @@ class Veteran extends ListBuilder
     protected function configureFilters($parameters): Veteran
     {
         $mapAvailableFilterByParameter = [
-            'district' => new Filter\Base\EqualFilter('district', \PDO::PARAM_STR),
+            'district' => new Filter\Base\MultipleEqualFilter('district', \PDO::PARAM_STR),
             'dutyStatus' => new Filter\Base\EqualFilter('dutyStatus', \PDO::PARAM_STR),
             'status' => new Filter\Base\EqualFilter('status', \PDO::PARAM_STR),
             'disability' => new Filter\Base\EqualFilter('disability', \PDO::PARAM_BOOL)

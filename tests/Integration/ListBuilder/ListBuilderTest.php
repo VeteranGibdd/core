@@ -47,7 +47,7 @@ class ListBuilderTest extends TestDbCase
 
         $listBuilder->configure($parameters);
 
-        self::assertStringContainsString('ORDER BY cert_number DESC', $listBuilder->query()->getSQL());
+        self::assertStringContainsString('ORDER BY certificate_number DESC', $listBuilder->query()->getSQL());
     }
 
     public function testGetVeteransList(): void
@@ -65,6 +65,47 @@ class ListBuilderTest extends TestDbCase
 
         $listBuilder->configure($parameters);
         assertCount(3, $listBuilder->query()->fetchAllAssociative());
+    }
+
+    public function testCanApplySeveralFilters(): void
+    {
+        $listBuilder = $this->listBuilder();
+
+        $parameters = ['district' => 'Adler', 'yearsOldWillBeThisYear' => 40];
+
+        $listBuilder->configure($parameters);
+        $fortyYearAgo = (new \DateTime('now'))->sub(new \DateInterval('P40Y'))->add(new \DateInterval('P1D'));
+
+        self::assertStringContainsString($parameters['district'], $listBuilder->query()->getSQL());
+        self::assertStringContainsString($fortyYearAgo->format('Y-m-d'), $listBuilder->query()->getSQL());
+    }
+
+    public function testCanApplySeveralSimilarFilters(): void
+    {
+        $listBuilder = $this->listBuilder();
+
+        $parameters = ['district' => ['Adler', 'Center']];
+
+        $listBuilder->configure($parameters);
+
+        foreach ($parameters['district'] as $district) {
+            self::assertStringContainsString($district, $listBuilder->query()->getSQL());
+        }
+    }
+
+    public function testCanApplySeveralSimilarFiltersForAge(): void
+    {
+        self::markTestIncomplete('Stepa has to fix it');
+        $listBuilder = $this->listBuilder();
+
+        $parameters = ['yearsOldWillBeThisYear' => [40, 50]];
+
+        $listBuilder->configure($parameters);
+
+        foreach ($parameters['yearsOldWillBeThisYear'] as $age) {
+            $date = (new \DateTime('now'))->sub(new \DateInterval("P{$age}Y"))->add(new \DateInterval('P1D'));
+            self::assertStringContainsString($date->format('Y-m-d'), $listBuilder->query()->getSQL());
+        }
     }
 
 
