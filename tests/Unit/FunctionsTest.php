@@ -15,7 +15,7 @@ class FunctionsTest extends TestCase
 
         $validator = new Validator();
         $schema = 'Veteran';
-        $data = (object) ['name' => 'Vasya', 'lastName' => 'Petrov'];
+        $data = (object)['name' => 'Vasya', 'lastName' => 'Petrov'];
 
         validateSchema($validator, $schema, $data);
     }
