@@ -25,6 +25,6 @@
     "opis/json-schema": "^2.3"
   },
   "scripts": {
-    "test": "php ./vendor/bin/phpunit ./tests"
+    "test": "php ./vendor/bin/phpunit --dont-report-useless-tests ./tests "
   }
 }
