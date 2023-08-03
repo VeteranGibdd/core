@@ -80,26 +80,6 @@ class VeteranStorageTest extends TestDbCase
         ];
     }
 
-    public function testVeteranValidationFunction(): void
-    {
-        $validator = new Validator();
-        $schema = __DIR__ . '/../testSchema.json';
-        $schemaId = 'https://veteran.ru/schema/test.json#';
-
-        $data = <<<'JSON'
-{
-    "firstName": "Тест",
-    "lastName": "Тестов",
-    "middleName": "Тестович",
-    "birthDate": "05-04-1995"
-}
-JSON;
-
-        $validator->resolver()->registerFile($schemaId, $schema);
-
-        $this->assertSame(true, Core\testVeteranValidation(json_encode($data, JSON_UNESCAPED_UNICODE), $validator, $schemaId));
-    }
-
     /**
      * @throws Exception
      */
@@ -109,22 +89,6 @@ JSON;
         $veteran = $this->veteran->byId($veteranId);
 
         $this->assertSame(($this->veteran()->lastName | $this->veteran()->organisation->status), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testVeteranSchemaValidation(): void
-    {
-        $veteranId = $this->veteran->add($this->veteran());
-        $veteran = $this->veteran->byId($veteranId);
-
-        $validator = new Validator();
-        $schema = __DIR__ . '/../../schema/veteran.json';
-        $schemaId = 'https://veteran.ru/schema/schema.json#';
-        $validator->resolver()->registerFile($schemaId, $schema);
-
-        $this->assertSame(true, Core\testVeteranValidation(json_encode($veteran, JSON_UNESCAPED_UNICODE), $validator, $schemaId));
     }
 
     /**

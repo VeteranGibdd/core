@@ -9,6 +9,10 @@ use function Gibdd\Core\validateSchema;
 
 class FunctionsTest extends TestCase
 {
+    /**
+     * @return void
+     * @throws ValidationException
+     */
     public function testAssertSchemaIsNotValid(): void
     {
         self::expectException(ValidationException::class);
@@ -20,6 +24,10 @@ class FunctionsTest extends TestCase
         validateSchema($validator, $schema, $data);
     }
 
+    /**
+     * @return void
+     * @throws ValidationException
+     */
     public function testAssertSchemaIsValid(): void
     {
         $validator = new Validator();
@@ -28,6 +36,10 @@ class FunctionsTest extends TestCase
         validateSchema($validator, $schema, $this->veteran());
     }
 
+    /**
+     * @return void
+     * @throws ValidationException
+     */
     public function testSchemaAssertionProvidesErrorMessage(): void
     {
         self::expectExceptionMessageMatches('/The required properties \(firstName\) are missing/');
