@@ -18,7 +18,7 @@ class FunctionsTest extends TestCase
         self::expectException(ValidationException::class);
 
         $validator = new Validator();
-        $schema = 'Veteran';
+        $schema = 'veteran';
         $data = (object)['name' => 'Vasya', 'lastName' => 'Petrov'];
 
         validateSchema($validator, $schema, $data);
@@ -31,7 +31,7 @@ class FunctionsTest extends TestCase
     public function testAssertSchemaIsValid(): void
     {
         $validator = new Validator();
-        $schema = 'Veteran';
+        $schema = 'veteran';
 
         validateSchema($validator, $schema, $this->veteran());
     }
@@ -45,7 +45,7 @@ class FunctionsTest extends TestCase
         self::expectExceptionMessageMatches('/The required properties \(firstName\) are missing/');
 
         $validator = new Validator();
-        $schema = 'Veteran';
+        $schema = 'veteran';
         $veteranWithError = $this->veteran();
 
         unset($veteranWithError->firstName);
