@@ -6,7 +6,8 @@
     "psr-4": {
       "Gibdd\\Core\\": "src/",
       "Gibdd\\Core\\Tests\\": "tests/"
-    }
+    },
+    "files": ["src/functions.php"]
   },
   "authors": [
     {
@@ -23,9 +24,10 @@
     "doctrine/dbal": "^3.6",
     "robmorgan/phinx": "^0.13.4",
     "ifedko/php-doctrine-dbal-pagination": "^3.0",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "opis/json-schema": "^2.3"
   },
   "scripts": {
-    "test": "php ./vendor/bin/phpunit ./tests"
+    "test": "php ./vendor/bin/phpunit --dont-report-useless-tests ./tests "
   }
 }
