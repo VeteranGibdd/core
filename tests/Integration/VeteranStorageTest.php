@@ -2,8 +2,10 @@
 
 namespace Gibdd\Core\Tests\Integration;
 
+use Doctrine\DBAL\Exception;
 use Gibdd\Core\VeteranStorage;
-use stdClass;
+use Gibdd\Core;
+use Opis\JsonSchema\Validator;
 
 class VeteranStorageTest extends TestDbCase
 {
@@ -29,7 +31,7 @@ class VeteranStorageTest extends TestDbCase
             'mobilePhone' => '89881234567',
             'reservePhone' => '89887654321',
             'email' => 'test2@mail.ru',
-            'disability' => '2 группа',
+            'disability' => 2,
 
             'passport' => (object)[
                 'serial' => '0322',
@@ -78,6 +80,9 @@ class VeteranStorageTest extends TestDbCase
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function testAdd(): void
     {
         $veteranId = $this->veteran->add($this->veteran());
@@ -86,6 +91,9 @@ class VeteranStorageTest extends TestDbCase
         $this->assertSame(($this->veteran()->lastName | $this->veteran()->organisation->status), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUpdate(): void
     {
         $updateData = (object)[
@@ -113,6 +121,9 @@ class VeteranStorageTest extends TestDbCase
         $this->assertSame(('Крутой' | 'Ветеран'), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDelete(): void
     {
         $veteranId = $this->veteran->add($this->veteran());
@@ -130,6 +141,9 @@ class VeteranStorageTest extends TestDbCase
         $this->assertSame(($this->minVeteran()->lastName | $this->minVeteran()->organisation->status), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
     }
 
+    /**
+     * @throws Exception
+     */
     public function testMinUpdate(): void
     {
         $updateData = (object)[
@@ -153,6 +167,7 @@ class VeteranStorageTest extends TestDbCase
         $veteranId = $this->veteran->add($this->minVeteran());
         $this->veteran->update($updateData, $veteranId);
         $veteran = $this->veteran->byId($veteranId);
+
 
         $this->assertSame(('Крутой' | 'Ветеран'), ($veteran->jsonSerialize()['lastName'] | $veteran->jsonSerialize()['organisation']['status']));
 

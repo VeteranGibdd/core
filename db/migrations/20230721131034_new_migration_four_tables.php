@@ -32,7 +32,7 @@ final class NewMigrationFourTables extends AbstractMigration
         $tableVeterans->addColumn('mobile_phone', 'text');
         $tableVeterans->addColumn('reserve_phone', 'text');
         $tableVeterans->addColumn('email', 'text');
-        $tableVeterans->addColumn('disability', 'text');
+        $tableVeterans->addColumn('disability', 'integer');
         $tableVeterans->addColumn('additionally', 'text');
         $tableVeterans->addColumn('passport', 'integer');
         $tableVeterans->addColumn('duty', 'integer');
