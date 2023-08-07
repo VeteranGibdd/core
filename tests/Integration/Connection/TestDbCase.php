@@ -1,6 +1,6 @@
 <?php
 
-namespace Gibdd\Core\Tests\Integration;
+namespace Gibdd\Core\Tests\Integration\Connection;
 
 use Doctrine\DBAL;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,7 @@ class TestDbCase extends TestCase
         parent::setUpBeforeClass();
 
         $connectionParams = [
-            'path' => __DIR__ . '/../veterans.sqlite3',
+            'path' => __DIR__ . '/../../veterans.sqlite3',
             'driver' => 'sqlite3',
         ];
 

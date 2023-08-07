@@ -1,6 +1,6 @@
 <?php
 
-namespace Gibdd\Core\Tests\Integration;
+namespace Gibdd\Core\Tests\Integration\Connection;
 
 class ConnectionToDBTest extends TestDbCase
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Gibdd\Core;
+namespace Gibdd\Core\Mapper;
 
-class VeteranMapper
+class Veteran
 {
     private \stdClass $data;
     private int $veteranId;
@@ -15,25 +15,25 @@ class VeteranMapper
         $this->data = $data;
     }
 
-    public function addDutyId(int $id): VeteranMapper
+    public function addDutyId(int $id): Veteran
     {
         $this->dutyId = $id;
         return $this;
     }
 
-    public function addPassportId(int $id): VeteranMapper
+    public function addPassportId(int $id): Veteran
     {
         $this->passportID = $id;
         return $this;
     }
 
-    public function addVeteranId(int $id): VeteranMapper
+    public function addVeteranId(int $id): Veteran
     {
         $this->veteranId = $id;
         return $this;
     }
 
-    public function addOrganisationId(int $id): VeteranMapper
+    public function addOrganisationId(int $id): Veteran
     {
         $this->organisationId = $id;
         return $this;
