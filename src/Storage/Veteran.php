@@ -1,12 +1,12 @@
 <?php
 
-namespace Gibdd\Core;
+namespace Gibdd\Core\Storage;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use stdClass;
 
-class VeteranStorage
+class Veteran
 {
     const VETERANS_TABLE_NAME = 'veterans';
     const PASSPORTS_TABLE_NAME = 'passports';
@@ -22,12 +22,12 @@ class VeteranStorage
     /**
      * Create Veteran by id
      * @param int $id
-     * @return Veteran
+     * @return \Gibdd\Core\Veteran
      * @throws Exception
      */
-    public function byId(int $id): Veteran
+    public function byId(int $id): \Gibdd\Core\Veteran
     {
-        return new Veteran($this->db->fetchAssociative('
+        return new \Gibdd\Core\Veteran($this->db->fetchAssociative('
         SELECT *
         FROM veterans v
         LEFT JOIN passports p ON v.passport = p.id
@@ -50,7 +50,7 @@ WHERE v.id IN (?)', [$id]));
         LEFT JOIN passports p ON v.id = p.id
         LEFT JOIN duty d on v.id = d.id
         LEFT JOIN organisation o on v.id = o.id') as $dbRow) {
-            $result[] = new Veteran($dbRow);
+            $result[] = new \Gibdd\Core\Veteran($dbRow);
         }
         return $result;
     }
@@ -63,7 +63,7 @@ WHERE v.id IN (?)', [$id]));
      */
     public function add(stdClass $data): int
     {
-        $mapper = new VeteranMapper($data);
+        $mapper = new \Gibdd\Core\Mapper\Veteran($data);
 
         try {
             $this->db->beginTransaction();
@@ -109,7 +109,7 @@ WHERE v.id IN (?)', [$id]));
      */
     public function update(stdClass $data, int $id): void
     {
-        $mapper = new VeteranMapper($data);
+        $mapper = new \Gibdd\Core\Mapper\Veteran($data);
         $mappedVetRow = $mapper->mappedVeteranRow();
         $mappedPassportRow = $mapper->mappedPassportRow();
         $mappedDutyRow = $mapper->mappedDutyRow();

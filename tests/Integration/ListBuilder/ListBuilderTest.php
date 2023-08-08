@@ -2,9 +2,9 @@
 
 namespace Gibdd\Core\Tests\Integration\ListBuilder;
 
+use Doctrine\DBAL\Exception;
 use Gibdd\Core\ListBuilder\Veteran;
-use Gibdd\Core\Tests\Integration\TestDbCase;
-use Gibdd\Core\VeteranStorage;
+use Gibdd\Core\Tests\Integration\Connection\TestDbCase;
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertSame;
 
@@ -53,9 +53,13 @@ class ListBuilderTest extends TestDbCase
         self::assertStringContainsString('ORDER BY certificate_number DESC', $listBuilder->query()->getSQL());
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function testGetVeteransList(): void
     {
-        $storage = new VeteranStorage(self::$db);
+        $storage = new \Gibdd\Core\Storage\Veteran(self::$db);
         $storage->add($this->veteran());
         $storage->add($this->veteran());
         $storage->add($this->veteran());
@@ -70,9 +74,13 @@ class ListBuilderTest extends TestDbCase
         assertCount(3, $listBuilder->query()->fetchAllAssociative());
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function testSortingByAge(): void
     {
-        $storage = new VeteranStorage(self::$db);
+        $storage = new \Gibdd\Core\Storage\Veteran(self::$db);
         $veteran2 = $this->veteran();
         $veteran3 = $this->veteran();
         $veteran2->birthDate = '1969-08-15';
@@ -147,9 +155,13 @@ class ListBuilderTest extends TestDbCase
         self::assertStringContainsString($fortyYearAgo->format('Y-m-d'), $listBuilder->query()->getSQL());
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function testFilterFromAge(): void
     {
-        $storage = new VeteranStorage(self::$db);
+        $storage = new \Gibdd\Core\Storage\Veteran(self::$db);
         $veteran2 = $this->veteran();
         $veteran3 = $this->veteran();
         $veteran2->birthDate = '1989-08-15';
@@ -166,9 +178,13 @@ class ListBuilderTest extends TestDbCase
         assertCount(2, $listBuilder->query()->fetchAllAssociative());
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function testFilterAfterAge(): void
     {
-        $storage = new VeteranStorage(self::$db);
+        $storage = new \Gibdd\Core\Storage\Veteran(self::$db);
         $veteran2 = $this->veteran();
         $veteran3 = $this->veteran();
         $veteran2->birthDate = '1989-08-15';
@@ -185,9 +201,13 @@ class ListBuilderTest extends TestDbCase
         assertCount(2, $listBuilder->query()->fetchAllAssociative());
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function testComplicateFiltering(): void
     {
-        $storage = new VeteranStorage(self::$db);
+        $storage = new \Gibdd\Core\Storage\Veteran(self::$db);
         $veteran2 = $this->veteran();
         $veteran3 = $this->veteran();
         $veteran4 = $this->veteran();

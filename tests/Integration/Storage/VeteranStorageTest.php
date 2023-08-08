@@ -1,21 +1,20 @@
 <?php
 
-namespace Gibdd\Core\Tests\Integration;
+namespace Gibdd\Core\Tests\Integration\Storage;
 
 use Doctrine\DBAL\Exception;
-use Gibdd\Core\VeteranStorage;
+use Gibdd\Core\Storage\Veteran;
 use Gibdd\Core;
-use Opis\JsonSchema\Validator;
 
-class VeteranStorageTest extends TestDbCase
+class VeteranStorageTest extends Core\Tests\Integration\Connection\TestDbCase
 {
-    private VeteranStorage $veteran;
+    private Veteran $veteran;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->veteran = new VeteranStorage(self::$db);
+        $this->veteran = new Veteran(self::$db);
 
     }
 
